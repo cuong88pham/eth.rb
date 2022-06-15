@@ -268,7 +268,7 @@ module Eth
     # @return [Object] returns the result of the call.
     def transact(contract, function_name, *args, **kwargs)
       if kwargs[:gas_limit]
-        gas_limit = gas_limit + Tx::CREATE_GAS
+        gas_limit = kwargs[:gas_limit] + Tx::CREATE_GAS
       else
         gas_limit = Tx.estimate_intrinsic_gas(contract.bin) + Tx::CREATE_GAS
       end
