@@ -267,7 +267,11 @@ module Eth
     #   @param address [String] contract address.
     # @return [Object] returns the result of the call.
     def transact(contract, function_name, *args, **kwargs)
-      gas_limit = Tx.estimate_intrinsic_gas(contract.bin) + Tx::CREATE_GAS
+      if kwargs[:gas_limit]
+        gas_limit = gas_limit + Tx::CREATE_GAS
+      else
+        gas_limit = Tx.estimate_intrinsic_gas(contract.bin) + Tx::CREATE_GAS
+      end
       fun = contract.functions.select { |func| func.name == function_name }[0]
       params = {
         value: 0,
